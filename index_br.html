@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macaferri</title>
+    <style>
+        @font-face {
+            font-family: 'MiFuentePersonalizada';
+            src: url('fonts/Titillium-Regular.otf') format('opentype');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('images/background.png');
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+        }
+
+        .button {
+            font-family: 'MiFuentePersonalizada', sans-serif;
+            width: 140px;
+            background-color: #004D5B;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 10px;
+            cursor: pointer;
+            position: relative;
+            transform: translateY(600%);
+            font-weight: bold;
+        }
+
+        .register {
+            background-color: transparent;
+            border: solid 2.5px;
+        }
+
+        .language-icons {
+            position: absolute; /* Añade esta línea */
+
+            top: 20px; /* Ajusta la posición vertical */
+            right: 20px; /* Ajusta la posición horizontal */
+            display: flex;
+            gap: 10px;
+        }
+
+        .language-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .english {
+            background-image: url('images/USA.png');
+            background-size: cover;
+        }
+
+        .spanish {
+            background-image: url('images/ESP.png');
+            background-size: cover;
+        }
+
+        .portuges {
+            background-image: url('images/BR.png');
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="language-icons">
+        <button class="language-icon portuges" onclick="window.location.href='index_br.html';"></button>
+        <button class="language-icon english" onclick="window.location.href='index.html';"></button>
+        <button class="language-icon spanish" onclick="window.location.href='index_es.html';"></button>
+        <!-- Add more language icons as needed -->
+    </div>
+    <button class="button" onclick="window.location.href='br_steelgrid.html'">STEELGRID®</button>
+    <button class="button" onclick="window.location.href='br_macarmour.html'">MAC ARMOUR®</button>
+    <button class="button register"
+            onclick="window.location.href='https://www2.maccaferri.com/l/965143/2023-05-26/5qj72t'">REGISTRAR
+    </button>
+</div>
+</body>
+</html>
