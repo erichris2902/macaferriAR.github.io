@@ -5,6 +5,8 @@
 <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
 <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.4.0/dist/aframe-extras.min.js"></script>
 <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+<script src="./js/multi-camera.js"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
@@ -35,13 +37,19 @@
 <body style="margin: 0px; overflow: hidden;">
 <div class="buttons">
     <button class="btn ar-button" onclick="window.open('index.html','_self');"><i class="fa fa-arrow-left"></i></button>
-    <button class="btn ar-button" onclick="window.open('fall.html','_self');"><i class="fa fa-retweet"></i></button>
+    <button class="btn ar-button" id="playBtn" style="display: none;"><i class="fa fa-play"></i></button>
+    <button class="btn ar-button" id="pauseBtn"><i class="fa fa-pause"></i></button>
+    <button class="btn ar-button" onclick="zoom=!zoom"><i class="fa fa-search"></i></button>
+    <button class="btn ar-button" onclick="location.reload();"><i class="fa fa-retweet"></i></button>
     <button class="btn ar-button" onclick="openPDF()"><i class="fa fa-file-pdf-o"></i></button>
 </div>
-<a-scene
+<a-scene stats
         embedded vr-mode-ui="enabled: false;"
         arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
         renderer="antialias: true;alpha: true; logarithmicDepthBuffer: true">
+    <img id="test-texture" src="https://cdn.aframe.io/examples/ui/kazetachinu.jpg" crossorigin="anonymous"/>
+
+
 
     <a-assets>
         <img id="grid" src="models/1.png"/>
@@ -61,20 +69,18 @@
               gltf-model="#glbmodel"
               active="0" position="0 0 0"
               scale="0 0 0 "
-              animation-mixer="clip: *;">
-    </a-entity>
+              animation-mixer="clip: *; loop: once; clampWhenFinished: true;">
+        <a-plane id="texture-plane1" position="0.370 0.570 0" rotation="-34.530 69.240 0" width="1" height="1"
+                 src='#test-texture'></a-plane>
+        <a-entity id="camera1" secondary-camera="cameraType:orthographic;output:scene; outputElement:#texture-plane1; sequence:before"
+                  position="0.370 0.570 0" rotation="-34.530 69.240 0">
 
-    <a-entity id="follower" active="0">
-        <a-plane id="followerPlane"
-                 position="0 0 0"
-                 rotation="-90 0 0"
-                 color="green"
-                 material="src:#grid; transparent: true; opacity: 0.90; side:double; visible:false;">
-        </a-plane>
+        </a-entity>
     </a-entity>
-
 
     <a-entity camera></a-entity>
+
+
 
     <!-- Probe light using the #pisa environment map -->
     <a-assets>
@@ -88,27 +94,27 @@
         </a-cubemap>
     </a-assets>
     <a-light
-            intensity="2"
+            intensity="1"
             position="0 5 0">
     </a-light>
     <a-light
-            intensity="2"
+            intensity="1"
             position="0 -5 0">
     </a-light>
     <a-light
-            intensity="2"
+            intensity="1"
             position="5 0 0">
     </a-light>
     <a-light
-            intensity="2"
+            intensity="1"
             position="-5 0 0">
     </a-light>
     <a-light
-            intensity="2"
+            intensity="1"
             position="0 0 5">
     </a-light>
     <a-light
-            intensity="2"
+            intensity="1"
             position="0 0 -5">
     </a-light>
 
@@ -119,6 +125,37 @@
     let markerVisible = false;
     var sceneEl = document.querySelector('a-scene');
     let timer = 0;
+    let isPlay = true;
+    let zoom = false;
+
+    document.querySelector("#playBtn").onclick = function (){
+        document.querySelector("#playBtn").style.display = 'none';
+        document.querySelector("#pauseBtn").style.display = 'block';
+        isPlay = true;
+        play();
+    };
+
+    document.querySelector("#pauseBtn").onclick = function (){
+        document.querySelector("#playBtn").style.display = 'block';
+        document.querySelector("#pauseBtn").style.display = 'none';
+        isPlay = false;
+        pause();
+    };
+
+    function pause() {
+        document.querySelector("#model3D").setAttribute('animation-mixer', {
+            timeScale: 0
+        });
+    }
+
+    function play() {
+        if(isPlay) {
+            document.querySelector("#model3D").setAttribute('animation-mixer', {
+                timeScale: 1
+            });
+        }
+    }
+
     AFRAME.registerComponent('registerevents', {
         init: function () {
             let marker = this.el;
@@ -141,6 +178,8 @@
             this.p = new THREE.Vector3();
             this.q = new THREE.Quaternion();
             this.s = new THREE.Vector3();
+
+            pause();
         },
 
         tick: function (time, deltaTime) {
@@ -150,6 +189,7 @@
                 timer = 0;
                 let marker = this.el;
                 let model3D = document.querySelector("#model3D");
+                let zoomPlane = document.querySelector("#texture-plane1");
 
                 let lerpAmount = 0.5;
 
@@ -160,73 +200,31 @@
                 model3D.object3D.position.lerp(this.p, lerpAmount);
                 model3D.object3D.quaternion.slerp(this.q, lerpAmount);
                 model3D.object3D.scale.lerp(this.s, lerpAmount);
+
+                if(zoom){
+                    zoomPlane.object3D.scale.set(1,1,1);
+                }else{
+                    zoomPlane.object3D.scale.set(0,0,0);
+                }
+                play();
             } else {
                 timer += 1;
                 if(timer > 300){
                     let model3D = document.querySelector("#model3D");
+                    let zoomPlane = document.querySelector("#texture-plane1");
                     model3D.object3D.scale.set(0,0,0);
+                    zoomPlane.object3D.scale.set(0,0,0);
+                    pause();
                 }
             }
         }
     });
-
-    const raycaster = new THREE.Raycaster();
-    raycaster.precision = 1;
-    const mouse = new THREE.Vector2();
-    sceneEl.addEventListener('click', onClick, false);
-
-    var sceneEl = document.querySelector('a-scene');
 
     function openPDF(){
         if (simulation == "steelgrid") {
             window.open("https://drive.google.com/file/d/1UnFFWVOpHBGHW43DIfqpoAbDIq1N6VBS/view?usp=sharing", "_blank");
         } else {
             window.open("https://drive.google.com/file/d/1jf7jicsqLOQMBwVHWuie0Zb-GK9VT70d/view?usp=sharing", "_blank");
-        }
-    }
-
-    function onClick(event) {
-        let model3D = document.querySelector("#model3D");
-        // Calcula las coordenadas normalizadas del clic del usuario
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        console.log("place");
-        console.log(mouse.x);
-        console.log(mouse.y);
-
-        // Actualiza el rayo con la posición y dirección de la cámara
-        console.log(sceneEl.camera);
-        raycaster.setFromCamera(mouse, sceneEl.camera);
-
-        // Intersecta con los objetos en la escena
-        const intersects = raycaster.intersectObjects(model3D.object3D.children);
-
-        if (intersects.length > 0) {
-            // Se hizo clic en un objeto
-            const clickedObject = intersects[0].object;
-            console.log('Objeto clickeado:', clickedObject);
-            intersects[0].object.material.color.set(0xff0000);
-            // Realiza acciones adicionales según tus necesidades
-
-            if (clickedObject.name == "pdf") {
-                if (simulation == "steelgrid") {
-                    window.open("https://drive.google.com/file/d/1UnFFWVOpHBGHW43DIfqpoAbDIq1N6VBS/view?usp=sharing", "_blank");
-                } else {
-                    window.open("https://drive.google.com/file/d/1jf7jicsqLOQMBwVHWuie0Zb-GK9VT70d/view?usp=sharing", "_blank");
-                }
-            } else if (clickedObject.name == "return") {
-                if (simulation == "steelgrid") {
-                    window.open("index.html",'_self');
-                } else {
-                    window.open("index.html",'_self');
-                }
-            } else if (clickedObject.name == "change") {
-                if (simulation == "steelgrid") {
-                    window.open("fall.html",'_self');
-                } else {
-                    window.open("fall.html",'_self');
-                }
-            }
         }
     }
 
