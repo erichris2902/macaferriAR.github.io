@@ -95,5 +95,16 @@
             onclick="window.location.href='https://www2.maccaferri.com/l/965143/2023-05-26/5qj72t'">REGISTER
     </button>
 </div>
+
+<script>
+    navigator.mediaDevices.getUserMedia({video: true})
+        .then(function (stream) {
+            // El usuario ha concedido permiso, puedes mostrar contenido de realidad aumentada aquí
+        })
+        .catch(function (error) {
+            // El usuario ha denegado el permiso o ha ocurrido un error
+            console.error('Error al acceder a la cámara:', error);
+        });
+</script>
 </body>
 </html>
