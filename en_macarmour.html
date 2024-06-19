@@ -33,6 +33,31 @@
         margin: 4px 2px;
         border-radius: 4px;
     }
+    #splash {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    }
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+    .loading {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 0.25rem solid rgba(255, 255, 255, 0.2);
+    border-top-color: white;
+    animation: spin 1s infinite linear;
+    }
 </style>
 <body style="margin: 0px; overflow: hidden;">
 <div class="buttons">
@@ -43,10 +68,14 @@
     <button class="btn ar-button" onclick="location.reload();"><i class="fa fa-retweet"></i></button>
     <button class="btn ar-button" onclick="openPDF()"><i class="fa fa-file-pdf-o"></i></button>
 </div>
+<div id="splash">
+    <div class="loading"></div>
+</div>
 <a-scene
          embedded vr-mode-ui="enabled: false;"
          arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-         renderer="antialias: true;alpha: true; logarithmicDepthBuffer: true; precision: medium;">
+         renderer="antialias: true;alpha: true; logarithmicDepthBuffer: true; precision: medium;"
+         loading-screen="dotsColor: red; backgroundColor: black">
     <img id="test-texture" src="https://cdn.aframe.io/examples/ui/kazetachinu.jpg" crossorigin="anonymous"/>
 
     <a-assets>
@@ -101,6 +130,14 @@
 </a-scene>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var scene = document.querySelector('a-scene');
+        var splash = document.querySelector('#splash');
+        scene.addEventListener('loaded', function (e) {
+            splash.style.display = 'none';
+        });
+    });
+
     const simulation = "macarmour";
     let markerVisible = false;
     var sceneEl = document.querySelector('a-scene');
