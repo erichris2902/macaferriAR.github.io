@@ -44,14 +44,13 @@
     <button class="btn ar-button" onclick="openPDF()"><i class="fa fa-file-pdf-o"></i></button>
 </div>
 <a-scene
-         stats
          embedded vr-mode-ui="enabled: false;"
          arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
          renderer="antialias: true;alpha: true; logarithmicDepthBuffer: true">
     <img id="test-texture" src="https://cdn.aframe.io/examples/ui/kazetachinu.jpg" crossorigin="anonymous"/>
 
 
-    
+    <a-scene stats></a-scene>
 
     <a-assets>
         <img id="grid" src="models/1.png"/>
@@ -95,7 +94,7 @@
             <img src="https://threejs.org/examples/textures/cube/pisa/nz.png" crossorigin="anonymous">
         </a-cubemap>
     </a-assets>
-    <!--a-light
+    <a-light
             intensity="1"
             position="0 5 0">
     </a-light>
@@ -118,7 +117,7 @@
     <a-light
             intensity="1"
             position="0 0 -5">
-    </a-light-->
+    </a-light>
 
 </a-scene>
 
