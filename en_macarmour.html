@@ -73,25 +73,7 @@
                  src='#test-texture'></a-plane>
         <a-entity id="camera1" secondary-camera="cameraType:orthographic;output:scene; outputElement:#texture-plane1; sequence:before"
                   position="0.370 0.570 0" rotation="-34.530 69.240 0">
-
         </a-entity>
-    </a-entity>
-
-    <a-entity camera></a-entity>
-
-
-
-    <!-- Probe light using the #pisa environment map -->
-    <a-assets>
-        <a-cubemap id="pisa">
-            <img src="https://threejs.org/examples/textures/cube/pisa/px.png" crossorigin="anonymous">
-            <img src="https://threejs.org/examples/textures/cube/pisa/nx.png" crossorigin="anonymous">
-            <img src="https://threejs.org/examples/textures/cube/pisa/py.png" crossorigin="anonymous">
-            <img src="https://threejs.org/examples/textures/cube/pisa/ny.png" crossorigin="anonymous">
-            <img src="https://threejs.org/examples/textures/cube/pisa/pz.png" crossorigin="anonymous">
-            <img src="https://threejs.org/examples/textures/cube/pisa/nz.png" crossorigin="anonymous">
-        </a-cubemap>
-
         <!--a-light
             intensity="1"
             position="0 5 0">
@@ -116,6 +98,22 @@
             intensity="1"
             position="0 0 -5">
         </a-light-->
+    </a-entity>
+
+    <a-entity camera></a-entity>
+
+
+
+    <!-- Probe light using the #pisa environment map -->
+    <a-assets>
+        <a-cubemap id="pisa">
+            <img src="https://threejs.org/examples/textures/cube/pisa/px.png" crossorigin="anonymous">
+            <img src="https://threejs.org/examples/textures/cube/pisa/nx.png" crossorigin="anonymous">
+            <img src="https://threejs.org/examples/textures/cube/pisa/py.png" crossorigin="anonymous">
+            <img src="https://threejs.org/examples/textures/cube/pisa/ny.png" crossorigin="anonymous">
+            <img src="https://threejs.org/examples/textures/cube/pisa/pz.png" crossorigin="anonymous">
+            <img src="https://threejs.org/examples/textures/cube/pisa/nz.png" crossorigin="anonymous">
+        </a-cubemap>
     </a-assets>
     
 
