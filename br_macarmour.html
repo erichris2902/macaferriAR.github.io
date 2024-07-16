@@ -44,9 +44,10 @@
     <button class="btn ar-button" onclick="openPDF()"><i class="fa fa-file-pdf-o"></i></button>
 </div>
 <a-scene
-         embedded vr-mode-ui="enabled: false;"
-         arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-         renderer="antialias: true;alpha: true; logarithmicDepthBuffer: true">
+        embedded vr-mode-ui="enabled: false;"
+        arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        renderer="antialias: true;alpha: true; logarithmicDepthBuffer: true; precision: medium;"
+        loading-screen="dotsColor: red; backgroundColor: black">
     <img id="test-texture" src="https://cdn.aframe.io/examples/ui/kazetachinu.jpg" crossorigin="anonymous"/>
 
 
@@ -74,8 +75,13 @@
                  src='#test-texture'></a-plane>
         <a-entity id="camera1" secondary-camera="cameraType:orthographic;output:scene; outputElement:#texture-plane1; sequence:before"
                   position="0.370 0.570 0" rotation="-34.530 69.240 0">
-
         </a-entity>
+        <a-light
+                intensity="6"
+                position="2 2 2"
+                type="spot"
+                angle="120">
+        </a-light>
     </a-entity>
 
     <a-entity camera></a-entity>
@@ -93,30 +99,6 @@
             <img src="https://threejs.org/examples/textures/cube/pisa/nz.png" crossorigin="anonymous">
         </a-cubemap>
     </a-assets>
-    <a-light
-            intensity="1"
-            position="0 5 0">
-    </a-light>
-    <a-light
-            intensity="1"
-            position="0 -5 0">
-    </a-light>
-    <a-light
-            intensity="1"
-            position="5 0 0">
-    </a-light>
-    <a-light
-            intensity="1"
-            position="-5 0 0">
-    </a-light>
-    <a-light
-            intensity="1"
-            position="0 0 5">
-    </a-light>
-    <a-light
-            intensity="1"
-            position="0 0 -5">
-    </a-light>
 
 </a-scene>
 
@@ -199,7 +181,7 @@
 
                 model3D.object3D.position.lerp(this.p, lerpAmount);
                 model3D.object3D.quaternion.slerp(this.q, lerpAmount);
-                model3D.object3D.scale.lerp(this.s, lerpAmount);
+                model3D.object3D.scale.set(2,2,2);
 
                 if(zoom){
                     zoomPlane.object3D.scale.set(1,1,1);
