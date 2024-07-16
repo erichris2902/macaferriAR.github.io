@@ -95,7 +95,7 @@
     <a-entity id="model3D"
               gltf-model="#glbmodel"
               active="0" position="0 0 0"
-              scale="0 0 0 "
+              scale="0 0 0"
               animation-mixer="clip: *; loop: once; clampWhenFinished: true;">
         <a-plane id="texture-plane1" position="0.370 0.570 0" rotation="-34.530 69.240 0" width="1" height="1"
                  src='#test-texture' material="shader: flat;"></a-plane>
@@ -208,6 +208,7 @@
                 let zoomPlane = document.querySelector("#texture-plane1");
 
                 let lerpAmount = 0.5;
+                let lerpScaleAmount = 2;
 
                 marker.object3D.getWorldPosition(this.p);
                 marker.object3D.getWorldQuaternion(this.q);
@@ -215,7 +216,7 @@
 
                 model3D.object3D.position.lerp(this.p, lerpAmount);
                 model3D.object3D.quaternion.slerp(this.q, lerpAmount);
-                model3D.object3D.scale.lerp(this.s, lerpAmount);
+                model3D.object3D.scale.set(2,2,2);
 
                 if(zoom){
                     zoomPlane.object3D.scale.set(1,1,1);
